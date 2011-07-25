@@ -24,43 +24,20 @@
 
 require './primes'
 
-class Problem69
-  include Primes
-  
-  attr_reader :answer
+include Primes
 
-  def initialize
-    @prime_list = []
-    primes(500_000) { |p| @prime_list << p }
-  end
-  
-  def solve
-    n, max = 1, 0
-    2.upto(1_000_000) do |i|
-      print '.' if i % 10_000 == 0
-      puts if i % 100_000 == 0
-      val = i / phi_function(i)
-      n, max = i, val if val > max
-    end
-    @answer = n
-  end
+# pi is prime factor of the number
+# φ(n) = n * (1 - 1 / p1) * (1 - 1 / p2) * ... * (1 - 1 / pn)
+# n / φ(n) = (p1 / (p1 - 1)) * (p2 / (p2 - 1)) * ... * (pn / (pn - 1))
+# p / (p - 1) is bigger when p is smaller
 
-  private
+# Trying with smallest consecutive prime factors possible
 
-  def phi_function(n)
-    my_primes, temp = [], n
-    @prime_list.each do |p|
-      break if p > temp
-      my_primes << p if temp % p == 0
-      while temp % p == 0
-        temp /= p
-      end
-    end
-    x = my_primes.inject(:*)
-    y = my_primes.collect { |i| i - 1 }.inject(:*)
-    n / x * y
-  end
+num = 1
+primes do |prime|
+  temp = num * prime
+  break if temp > 1_000_000
+  num = temp
 end
 
-# Very slow and not working correctly
-puts Problem69.new.solve
+puts num
