@@ -37,12 +37,70 @@
 # top left corner of each solution grid; for example, 483 is the 3-digit number
 # found in the top left corner of the solution grid above.
 
-def read_grid(file)
-  matrix = []
-  9.times do
-    matrix += file.gets.strip.split(//).collect { |n| n.eql?('0') ? [] : n.to_i }
+class Item
+  attr_accessor :value, :possible_values
+  attr_reader :box, :column, :row
+  
+  def initialize(box, column, row)
+    @box = box
+    @box << self
+    @column = column
+    @column << self
+    @row = row
+    @row << self
   end
-  matrix
+end
+
+class SuDokuSolver
+  attr_reader :boxes, :columns, :rows
+  
+  def initialize(matrix)
+    @boxes = 9.times.collect { [] }
+    @columns = 9.times.collect { [] }
+    @rows = 9.times.collect { [] }
+    matrix.each_with_index do |value, index|
+      item = Item.new(
+        boxes[3 * ((index / 9) / 3) + ((index % 9) / 3)],
+        columns[index % 9],
+        rows[index / 9])
+      item.value = value unless value == 0
+    end    
+  end
+end
+
+File.open('data/problem96_sudoku.txt', 'r') do |file|
+  while (line = file.gets)
+    matrix = 9.times.inject([]) { |m,i| m += file.gets.strip.split(//).collect { |n| n.to_i } }
+    solver = SuDokuSolver.new(matrix)
+    break
+  end
+end
+
+
+
+=begin
+
+def get_row(matrix, index)
+  first = index - index % 9
+  matrix[first...(first + 9)]
+end
+
+def get_column(matrix, index)
+  (index % 9).step(matrix.size - 1, 9).collect { |i| matrix[i] }
+end
+
+def block_index(index)
+  first = (index / 9 / 3) * 27 + ((index % 9) / 3) * 3
+  r = []
+  3.times do
+    3.times { r << first ; first += 1 }
+    first += 6
+  end
+  r
+end
+
+def get_block(matrix, index)
+  block_index(index).collect { |i| matrix[i] }
 end
 
 def print_grid(matrix)
@@ -53,15 +111,49 @@ def print_grid(matrix)
       end
       puts '------+-------+------' if i % 27 == 0
     end
-    print "#{v.is_a?(Array) ? 0 : v} "
+    print "#{v.is_a?(Array) ? (v.size == 0 ? 0 : '[' + v.join('/') + ']') : v} "
   end
   puts
+end
+
+def fill_unknown(matrix)
+  for i in 0...matrix.size do
+    next unless matrix[i].is_a?(Array)
+    used = get_block(matrix, i) + get_row(matrix, i) + get_column(matrix, i)
+    matrix[i] = [1,2,3,4,5,6,7,8,9] - used
+  end
+end
+
+def replace_single(matrix)
+  for i in 0...matrix.size do
+    next unless matrix[i].is_a?(Array) and matrix[i].size == 1
+    matrix[i] = matrix[i].first
+  end
+end
+
+def do_step(matrix)
+  puts
+  fill_unknown(matrix)
+  replace_single(matrix)
+  print_grid(matrix)
 end
 
 File.open('data/problem96_sudoku.txt', 'r') do |file|
   while (line = file.gets)
     matrix = read_grid(file)
     print_grid(matrix)
+    do_step(matrix)
+    do_step(matrix)
+    do_step(matrix)
+    do_step(matrix)
+    do_step(matrix)
+    do_step(matrix)
+    do_step(matrix)
+    do_step(matrix)
+    do_step(matrix)
+    do_step(matrix)
     break
   end
 end
+
+=end
