@@ -40,4 +40,5 @@ primes do |prime|
   num = temp
 end
 
+# Display result
 puts num
