@@ -37,74 +37,108 @@
 # top left corner of each solution grid; for example, 483 is the 3-digit number
 # found in the top left corner of the solution grid above.
 
+class Array
+  def values
+    select { |item| item.is_a?(Item) and item.known? }.collect { |item| item.value }
+  end
+end
+
 class Item
-  attr_accessor :value, :possible_values
-  attr_reader :box, :column, :row
+  attr_reader :value, :possible, :box, :column, :row
   
   def initialize(value, box, column, row)
-    @value = value == 0 ? nil : value
-    @possible_values = (1..9).to_a
-    @box = box
-    @box << self
-    @column = column
-    @column << self
-    @row = row
-    @row << self
+    @value = (value == 0 ? nil : value)
+    @possible = (1..9).to_a
+    @box = box << self
+    @column = column << self
+    @row = row << self
   end
   
-  def update
-    @possible_values -= (@box.values + @column.values + @row.values)
-    if @possible_values.size == 1
-      @value = @possible_values.first
-      @box.values << @value
-      @column.values << @value
-      @row.values << @value
-      return true
+  def known?
+    !@value.nil?
+  end
+  
+  def update_single
+    @possible -= (@box.values + @column.values + @row.values)
+    @value = @possible[0] if @possible.size == 1
+    known?
+  end
+  
+  def update_exclude
+    return true if check_for_single_possible_value(@box)
+    return true if check_for_single_possible_value(@column)
+    return true if check_for_single_possible_value(@row)
+    false
+  end
+  
+  def check_for_single_possible_value(list)
+    @possible.each do |v|
+      if list.select { |i| i != self and !i.known? and i.possible.include?(v) }.size == 0
+        @value = v
+        return true
+      end
     end
     false
   end
 end
 
-class Collection
-  attr_reader :items, :values
-  
-  def initialize
-    @items, @values = [], []
+class Grid
+  def self.from_file(file)
+    name = file.gets
+    return nil unless name
+    name.strip
+    matrix = 9.times.inject([]) { |m, i| m += file.gets.strip.split(//).collect { |n| n.to_i } }
+    Grid.new(name, matrix)
   end
   
-  def <<(item)
-    self.items << item
-    self.values << item.value if item.value
-  end
-end
-
-class SuDokuSolver
-  attr_reader :boxes, :columns, :rows, :unknown_items
-  
-  def initialize(matrix)
-    @boxes = 9.times.collect { Collection.new }
-    @columns = 9.times.collect { Collection.new }
-    @rows = 9.times.collect { Collection.new }
+  def initialize(name, matrix)
+    @name = name
+    @boxes = 9.times.collect { [] }
+    @columns = 9.times.collect { [] }
+    @rows = 9.times.collect { [] }
     @unknown_items = []
-    matrix.each_with_index do |value, index|
-      item = Item.new(
-        value,
-        boxes[3 * ((index / 9) / 3) + ((index % 9) / 3)],
-        columns[index % 9],
-        rows[index / 9])
-      @unknown_items << item unless item.value
-    end    
+    parse(matrix)
   end
   
   def solve
-    while update_possible_values ; end
-    raise "Needs more thought!" if @unknown_items.any?
+    loop do
+      has_changed = false
+      while update_unknown { |item| item.update_single }
+        has_changed = true
+      end
+      while update_unknown { |item| item.update_exclude }
+        has_changed = true
+      end
+      break unless has_changed
+    end
+    @unknown_items.empty?
+  rescue Exception => e
+    puts e
+    false
+  ensure
+    print
+  end
+  
+  def print
+    puts @name
+    @rows.each { |row| puts row.collect { |item| item.value || '_' }.join(',') }
   end
   
 private
-
-  def update_possible_values
-    known_items = @unknown_items.select { |item| item.update }
+  
+  def parse(matrix)
+    matrix.each_with_index do |value, index|
+      item = Item.new(
+        value,
+        @boxes[3 * ((index / 9) / 3) + ((index % 9) / 3)],
+        @columns[index % 9],
+        @rows[index / 9])
+      @unknown_items << item unless item.known?
+    end
+  end
+  
+  def update_unknown
+    known_items = @unknown_items.select { |item| yield item }
     @unknown_items -= known_items
     known_items.any?
   end
@@ -112,18 +146,10 @@ end
 
 File.open('data/problem96_sudoku.txt', 'r') do |file|
   failed_count = 0
-  while (line = file.gets)
-    puts line
-    matrix = 9.times.inject([]) { |m,i| m += file.gets.strip.split(//).collect { |n| n.to_i } }
-    solver = SuDokuSolver.new(matrix)
-    begin
-      solver.solve
-    rescue Exception => e
-      puts e
-      failed_count += 1
-    end
-    solver.rows.each { |box| puts box.items.collect { |i| i.value || '_' }.join(',') }
+  while (solver = Grid.from_file(file))
+    failed_count += 1 unless solver.solve
     puts
   end
   puts "Failed solutions: #{failed_count}"
 end
+
