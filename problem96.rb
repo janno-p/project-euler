@@ -41,7 +41,10 @@ class Item
   attr_accessor :value, :possible_values
   attr_reader :box, :column, :row
   
-  def initialize(box, column, row)
+  PossibleValues = (1..9).to_a
+  
+  def initialize(value, box, column, row)
+    @value = value == 0 ? nil : value 
     @box = box
     @box << self
     @column = column
@@ -49,111 +52,80 @@ class Item
     @row = row
     @row << self
   end
+  
+  def update
+    used = @box.values + @column.values + @row.values
+    @possible_values = PossibleValues - used
+    if @possible_values.size == 1
+      @value = @possible_values.first
+      @box.values << @value
+      @column.values << @value
+      @row.values << @value
+      return true
+    end
+    false
+  end
+end
+
+class Collection
+  attr_reader :items, :values
+  
+  def initialize
+    @items, @values = [], []
+  end
+  
+  def <<(item)
+    self.items << item
+    self.values << item.value if item.value
+  end
 end
 
 class SuDokuSolver
-  attr_reader :boxes, :columns, :rows
+  attr_reader :boxes, :columns, :rows, :unknown_items
   
   def initialize(matrix)
-    @boxes = 9.times.collect { [] }
-    @columns = 9.times.collect { [] }
-    @rows = 9.times.collect { [] }
+    @boxes = 9.times.collect { Collection.new }
+    @columns = 9.times.collect { Collection.new }
+    @rows = 9.times.collect { Collection.new }
+    @unknown_items = []
     matrix.each_with_index do |value, index|
       item = Item.new(
+        value,
         boxes[3 * ((index / 9) / 3) + ((index % 9) / 3)],
         columns[index % 9],
         rows[index / 9])
-      item.value = value unless value == 0
+      @unknown_items << item unless item.value
     end    
   end
+  
+  def solve
+    while update_possible_values ; end
+    raise "Needs more thought!" if @unknown_items.any?
+  end
+  
+private
+
+  def update_possible_values
+    known_items = @unknown_items.select { |item| item.update }
+    @unknown_items -= known_items
+    known_items.any?
+  end
 end
 
 File.open('data/problem96_sudoku.txt', 'r') do |file|
+  failed_count = 0
   while (line = file.gets)
+    puts line
     matrix = 9.times.inject([]) { |m,i| m += file.gets.strip.split(//).collect { |n| n.to_i } }
-    solver = SuDokuSolver.new(matrix)
-    break
-  end
-end
-
-
-
-=begin
-
-def get_row(matrix, index)
-  first = index - index % 9
-  matrix[first...(first + 9)]
-end
-
-def get_column(matrix, index)
-  (index % 9).step(matrix.size - 1, 9).collect { |i| matrix[i] }
-end
-
-def block_index(index)
-  first = (index / 9 / 3) * 27 + ((index % 9) / 3) * 3
-  r = []
-  3.times do
-    3.times { r << first ; first += 1 }
-    first += 6
-  end
-  r
-end
-
-def get_block(matrix, index)
-  block_index(index).collect { |i| matrix[i] }
-end
-
-def print_grid(matrix)
-  matrix.each_with_index do |v, i|
-    if i > 0
-      if i % 9 == 0 then puts
-      elsif i % 3 == 0 then print '| '
-      end
-      puts '------+-------+------' if i % 27 == 0
+    begin
+      solver = SuDokuSolver.new(matrix)
+      solver.solve
+      solver.rows.each { |box| puts box.items.collect { |i| i.value || 0 }.join(',') }
+    rescue Exception => e
+      puts e
+      failed_count += 1
     end
-    print "#{v.is_a?(Array) ? (v.size == 0 ? 0 : '[' + v.join('/') + ']') : v} "
+    puts
   end
-  puts
+  puts "Failed solutions: #{failed_count}"
 end
-
-def fill_unknown(matrix)
-  for i in 0...matrix.size do
-    next unless matrix[i].is_a?(Array)
-    used = get_block(matrix, i) + get_row(matrix, i) + get_column(matrix, i)
-    matrix[i] = [1,2,3,4,5,6,7,8,9] - used
-  end
-end
-
-def replace_single(matrix)
-  for i in 0...matrix.size do
-    next unless matrix[i].is_a?(Array) and matrix[i].size == 1
-    matrix[i] = matrix[i].first
-  end
-end
-
-def do_step(matrix)
-  puts
-  fill_unknown(matrix)
-  replace_single(matrix)
-  print_grid(matrix)
-end
-
-File.open('data/problem96_sudoku.txt', 'r') do |file|
-  while (line = file.gets)
-    matrix = read_grid(file)
-    print_grid(matrix)
-    do_step(matrix)
-    do_step(matrix)
-    do_step(matrix)
-    do_step(matrix)
-    do_step(matrix)
-    do_step(matrix)
-    do_step(matrix)
-    do_step(matrix)
-    do_step(matrix)
-    do_step(matrix)
-    break
-  end
-end
-
-=end
