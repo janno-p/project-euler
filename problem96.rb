@@ -41,10 +41,9 @@ class Item
   attr_accessor :value, :possible_values
   attr_reader :box, :column, :row
   
-  PossibleValues = (1..9).to_a
-  
   def initialize(value, box, column, row)
-    @value = value == 0 ? nil : value 
+    @value = value == 0 ? nil : value
+    @possible_values = (1..9).to_a
     @box = box
     @box << self
     @column = column
@@ -54,8 +53,7 @@ class Item
   end
   
   def update
-    used = @box.values + @column.values + @row.values
-    @possible_values = PossibleValues - used
+    @possible_values -= (@box.values + @column.values + @row.values)
     if @possible_values.size == 1
       @value = @possible_values.first
       @box.values << @value
@@ -117,14 +115,14 @@ File.open('data/problem96_sudoku.txt', 'r') do |file|
   while (line = file.gets)
     puts line
     matrix = 9.times.inject([]) { |m,i| m += file.gets.strip.split(//).collect { |n| n.to_i } }
+    solver = SuDokuSolver.new(matrix)
     begin
-      solver = SuDokuSolver.new(matrix)
       solver.solve
-      solver.rows.each { |box| puts box.items.collect { |i| i.value || 0 }.join(',') }
     rescue Exception => e
       puts e
       failed_count += 1
     end
+    solver.rows.each { |box| puts box.items.collect { |i| i.value || '_' }.join(',') }
     puts
   end
   puts "Failed solutions: #{failed_count}"
