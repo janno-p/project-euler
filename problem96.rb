@@ -39,7 +39,15 @@
 
 class Array
   def values
-    select { |item| item.is_a?(Item) and item.known? }.collect { |item| item.value }
+    known.collect { |item| item.value }
+  end
+  
+  def unknown
+    select { |e| e.is_a?(Item) and !e.known? }
+  end
+  
+  def known
+    select { |e| e.is_a?(Item) and e.known? }
   end
 end
 
@@ -60,21 +68,26 @@ class Item
   
   def update_single
     @possible -= (@box.values + @column.values + @row.values)
-    @value = @possible[0] if @possible.size == 1
+    if @possible.size == 1
+      @value = @possible[0]
+      @possible.clear
+      @box.unknown.each { |item| item.possible.delete(@value) }
+      @column.unknown.each { |item| item.possible.delete(@value) }
+      @row.unknown.each { |item| item.possible.delete(@value) }
+    end
     known?
   end
   
   def update_exclude
-    return true if check_for_single_possible_value(@box)
-    return true if check_for_single_possible_value(@column)
-    return true if check_for_single_possible_value(@row)
-    false
+    check_for_single_possible_value(@box) or
+    check_for_single_possible_value(@column) or
+    check_for_single_possible_value(@row)
   end
   
   def check_for_single_possible_value(list)
     @possible.each do |v|
-      if list.select { |i| i != self and !i.known? and i.possible.include?(v) }.size == 0
-        @value = v
+      if list.unknown.select { |e| e != self and e.possible.include?(v) }.size == 0
+        @possible.delete_if { |val| val != v }
         return true
       end
     end
@@ -106,7 +119,7 @@ class Grid
       while update_unknown { |item| item.update_single }
         has_changed = true
       end
-      while update_unknown { |item| item.update_exclude }
+      if update_exclude
         has_changed = true
       end
       break unless has_changed
@@ -141,6 +154,14 @@ private
     known_items = @unknown_items.select { |item| yield item }
     @unknown_items -= known_items
     known_items.any?
+  end
+  
+  def update_exclude
+    has_changed = false
+    @unknown_items.each do |item|
+      has_changed = true if item.update_exclude
+    end
+    has_changed
   end
 end
 
