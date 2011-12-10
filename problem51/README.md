@@ -1,4 +1,4 @@
-## Problem 51 ##
+# Problem 51 #
 
 <del>By replacing the 1<sup>st</sup> digit of *57, it turns out that six of the
 possible values: 157, 257, 457, 557, 757, and 857 are all prime.</del>
