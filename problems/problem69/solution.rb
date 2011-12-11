@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require File.dirname(__FILE__) + '/../common/primes'
+require File.join(File.dirname(__FILE__), '..', 'common', 'primes.rb')
 
 include Primes
 
