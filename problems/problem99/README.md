@@ -7,10 +7,10 @@ Comparing two numbers written in index form like 2<sup>11</sup> and
 However, confirming that 632382<sup>518061</sup> &gt; 519432<sup>525806</sup>
 would be much more difficult, as both numbers contain over three million digits.
 
-Using [base_exp.txt](../../../raw/master/problems/data/matrix.txt) (right click
-and 'Save Link/Target As...'), a 22K text file containing one thousand lines
-with a base/exponent pair on each line, determine which line number has the
-greatest numerical value.
+Using [base_exp.txt](../../../raw/master/problems/data/base_exp.txt) (right
+click and 'Save Link/Target As...'), a 22K text file containing one thousand
+lines with a base/exponent pair on each line, determine which line number has
+the greatest numerical value.
 
 NOTE: The first two lines in the file represent the numbers in the example given
 above.
