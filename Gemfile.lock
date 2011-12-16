@@ -1,6 +1,6 @@
 GEM
   specs:
-    redcarpet (2.0.0)
+    redcarpet (2.0.1)
 
 PLATFORMS
   ruby
