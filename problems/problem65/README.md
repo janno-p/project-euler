@@ -2,14 +2,7 @@
 
 The square root of 2 can be written as an infinite continued fraction.
 
-<div style="margin-left: 20px;">
-<math><mrow><msqrt><mrow><mn>2</mn></mrow></msqrt><mo>=</mo>
-<mn>1</mn><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn><mo>+</mo>
-<mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn><mo>+</mo><mfrac><mrow><mn>1</mn>
-</mrow><mrow><mn>2</mn><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn>
-<mo>+</mo><mn>...</mn></mrow></mfrac></mrow></mfrac></mrow></mfrac></mrow>
-</mfrac></mrow></math>
-</div>
+&radic;2 = 1 + (1 / (2 + (1 / (2 + (1 / (2 + (1 / (2 + ...))))))))
 
 The infinite continued fraction can be written, &radic;2 = [1;(2)], (2)
 indicates that 2 repeats *ad infinitum*. In a similar way,
@@ -19,29 +12,13 @@ It turns out that the sequence of partial values of continued fractions for
 square roots provide the best rational approximations. Let us consider the
 convergents for &radic;2.
 
-<div style="margin-left: 20px;">
-<math><mrow><mn>1</mn><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn>
-</mrow></mfrac><mo>=</mo><mfrac><mrow><mn>3</mn></mrow><mrow><mn>2</mn></mrow>
-</mfrac></mrow></math>
-<br />
-<math><mrow><mn>1</mn><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn>
-<mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow>
-</mfrac><mo>=</mo><mfrac><mrow><mn>7</mn></mrow><mrow><mn>5</mn></mrow></mfrac>
-</mrow></math>
-<br />
-<math><mrow><mn>1</mn><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn>
-<mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn><mo>+</mo><mfrac><mrow>
-<mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></mfrac></mrow></mfrac>
-<mo>=</mo><mfrac><mrow><mn>17</mn></mrow><mrow><mn>12</mn></mrow></mfrac></mrow>
-</math>
-<br />
-<math><mrow><mn>1</mn><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn>
-<mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn><mo>+</mo><mfrac><mrow>
-<mn>1</mn></mrow><mrow><mn>2</mn><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow>
-<mn>2</mn></mrow></mfrac></mrow></mfrac></mrow></mfrac></mrow></mfrac></mrow>
-</mfrac><mo>=</mo><mfrac><mrow><mn>41</mn></mrow><mrow><mn>29</mn></mrow>
-</mfrac></mrow></math>
-</div>
+1 + (1 / 2) = <sup>3</sup>/<sub>2</sub>
+
+1 + (1 / (2 + (1 / 2))) = <sup>7</sup>/<sub>5</sub>
+
+1 + (1 / (2 + (1 / (2 + (1 / 2))))) = <sup>17</sup>/<sub>12</sub>
+
+1 + (1 / (2 + (1 / (2 + (1 / (2 + (1 / 2))))))) = <sup>41</sup>/<sub>29</sub>
 
 Hence the sequence of the first ten convergents for &radic;2 are:
 
