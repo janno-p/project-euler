@@ -2,7 +2,7 @@
 
 The square root of 2 can be written as an infinite continued fraction.
 
-&radic;2 = 1 + (1 / (2 + (1 / (2 + (1 / (2 + (1 / (2 + ...))))))))
+&radic;2 = 1 + 1 / (2 + 1 / (2 + 1 / (2 + 1 / (2 + ...))))
 
 The infinite continued fraction can be written, &radic;2 = [1;(2)], (2)
 indicates that 2 repeats *ad infinitum*. In a similar way,
@@ -12,13 +12,13 @@ It turns out that the sequence of partial values of continued fractions for
 square roots provide the best rational approximations. Let us consider the
 convergents for &radic;2.
 
-1 + (1 / 2) = <sup>3</sup>/<sub>2</sub>
+1 + 1 / 2 = <sup>3</sup>/<sub>2</sub>
 
-1 + (1 / (2 + (1 / 2))) = <sup>7</sup>/<sub>5</sub>
+1 + 1 / (2 + 1 / 2) = <sup>7</sup>/<sub>5</sub>
 
-1 + (1 / (2 + (1 / (2 + (1 / 2))))) = <sup>17</sup>/<sub>12</sub>
+1 + 1 / (2 + 1 / (2 + 1 / 2)) = <sup>17</sup>/<sub>12</sub>
 
-1 + (1 / (2 + (1 / (2 + (1 / (2 + (1 / 2))))))) = <sup>41</sup>/<sub>29</sub>
+1 + 1 / (2 + 1 / (2 + 1 / (2 + 1 / 2))) = <sup>41</sup>/<sub>29</sub>
 
 Hence the sequence of the first ten convergents for &radic;2 are:
 
