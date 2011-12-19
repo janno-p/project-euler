@@ -51,11 +51,7 @@ File.readlines(File.join(File.dirname(__FILE__), '..', 'data', 'roman.txt')).eac
   number = decode(initial_literal, values)
   final_literal = encode(number, values)
   
-  diff = initial_literal.length - final_literal.length
-  if diff < 0 then
-    puts "#{number}: #{initial_literal}/#{final_literal}"
-    raise "Appi!"
-  end
+  diff = initial_literal.length - final_literal.length  
   
   reduced_sum += diff
 end
