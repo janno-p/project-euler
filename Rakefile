@@ -59,9 +59,9 @@ task :update do
           number = row * row_length + column + 1
           number = '' if number > problem_count
           if problem_numbers.include?(number) then
-            builder.td { builder.strong { builder.ins(number.to_s) } }
+            builder.td { builder.strong { builder.del(number.to_s) } }
           else
-            builder.td { builder.del(number.to_s) }
+            builder.td { builder.ins(number.to_s) }
           end
         end
       end
