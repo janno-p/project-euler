@@ -165,7 +165,7 @@ private
   end
 end
 
-File.open('data/problem96_sudoku.txt', 'r') do |file|
+File.open(File.join(File.dirname(__FILE__), '..', 'data', 'sudoku.txt'), 'r') do |file|
   failed_count = 0
   while (solver = Grid.from_file(file))
     failed_count += 1 unless solver.solve

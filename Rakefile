@@ -1,8 +1,12 @@
-task :default => [:list_known]
+task :default => [:list]
 
 desc "List all problems we have solution for"
-task :list_known do
-  puts 'Midagi ei tea!'
+task :list do
+  problem_numbers = []
+  Dir.foreach('./problems/') do |name|
+    problem_numbers << $1.to_i if name =~ /^problem(\d+)$/
+  end
+  puts "Solutions for problems: #{problem_numbers.sort.join(', ')}"
 end
 
 desc "Solve problem with given id"
