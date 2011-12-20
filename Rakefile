@@ -58,7 +58,7 @@ task :update do
         row_length.times do |column|
           number = row * row_length + column + 1
           number = '' if number > problem_count
-          builder.td { builder.strong { problem_numbers.include?(number) ? builder.del(number.to_s) : number.to_s } }          
+          builder.td { problem_numbers.include?(number) ? builder.strong { builder.del(number.to_s) } : builder.strong(number.to_s) }
         end
       end
     end
