@@ -1,12 +1,16 @@
 task :default => [:list]
 
-desc "List all problems we have solution for"
-task :list do
+def get_problems_list
   problem_numbers = []
   Dir.foreach('./problems/') do |name|
     problem_numbers << $1.to_i if name =~ /^problem(\d+)$/
   end
-  puts "Solutions for problems: #{problem_numbers.sort.join(', ')}"
+  problem_numbers.sort
+end
+
+desc "List all problems we have solution for"
+task :list do  
+  puts "Solutions for problems: #{get_problems_list.join(', ')}"
 end
 
 desc "Solve problem with given id"
@@ -36,4 +40,43 @@ task :md2html, :problem_id do |task, args|
   markdown = File.read(problem_file_name)
   processor = Redcarpet::Markdown.new(Redcarpet::Render::HTML, :autolink => true, :space_after_headers => true)
   File.write('README.htm', processor.render(markdown))
+end
+
+desc "Updates main README file"
+task :update do
+  require 'builder'
+  
+  row_length = 25
+  problem_count = 363
+  problem_numbers = get_problems_list
+  num_rows = problem_count / row_length + 1
+  
+  builder = Builder::XmlMarkup.new(:indent => 2)
+  table_html = builder.table({ :style => 'border: 1px solid gray;'}) do
+    num_rows.times do |row|
+      builder.tr do
+        row_length.times do |column|
+          number = row * 25 + column + 1
+          number = '' if number > problem_count
+          attributes = { :style => 'border: 1px solid gray; font-size: 11px; text-align: center;' }
+          if problem_numbers.include?(number) then
+            attributes[:style] << ' background-color: #cee7b6;'
+            builder.td(attributes) { builder.strong(number.to_s) }
+          else
+            builder.td(attributes, number)
+          end
+        end
+      end
+    end
+  end
+  
+  content = <<-eos
+# Project Euler #
+
+My solutions for Project Euler (http://projecteuler.net) problems.
+
+#{table_html}
+eos
+  
+  File.write('README.md', content)
 end
