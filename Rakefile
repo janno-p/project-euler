@@ -61,7 +61,7 @@ task :update do
           if problem_numbers.include?(number) then
             builder.td { builder.strong { builder.ins(number.to_s) } }
           else
-            builder.td(number.to_s)
+            builder.td { builder.del(number.to_s) }
           end
         end
       end
