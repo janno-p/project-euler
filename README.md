@@ -5,7 +5,9 @@ My solutions for Project Euler (http://projecteuler.net) problems.
 <table>
   <tr>
     <td>
-      <strong>1</strong>
+      <strong>
+        <del>1</del>
+      </strong>
     </td>
     <td>2</td>
     <td>3</td>
@@ -42,7 +44,9 @@ My solutions for Project Euler (http://projecteuler.net) problems.
   <tr>
     <td>31</td>
     <td>
-      <strong>32</strong>
+      <strong>
+        <del>32</del>
+      </strong>
     </td>
     <td>33</td>
     <td>34</td>
@@ -65,12 +69,16 @@ My solutions for Project Euler (http://projecteuler.net) problems.
     <td>49</td>
     <td>50</td>
     <td>
-      <strong>51</strong>
+      <strong>
+        <del>51</del>
+      </strong>
     </td>
     <td>52</td>
     <td>53</td>
     <td>
-      <strong>54</strong>
+      <strong>
+        <del>54</del>
+      </strong>
     </td>
     <td>55</td>
     <td>56</td>
@@ -85,19 +93,25 @@ My solutions for Project Euler (http://projecteuler.net) problems.
     <td>63</td>
     <td>64</td>
     <td>
-      <strong>65</strong>
+      <strong>
+        <del>65</del>
+      </strong>
     </td>
     <td>66</td>
     <td>67</td>
     <td>68</td>
     <td>
-      <strong>69</strong>
+      <strong>
+        <del>69</del>
+      </strong>
     </td>
     <td>70</td>
     <td>71</td>
     <td>72</td>
     <td>
-      <strong>73</strong>
+      <strong>
+        <del>73</del>
+      </strong>
     </td>
     <td>74</td>
     <td>75</td>
@@ -109,7 +123,9 @@ My solutions for Project Euler (http://projecteuler.net) problems.
     <td>79</td>
     <td>80</td>
     <td>
-      <strong>81</strong>
+      <strong>
+        <del>81</del>
+      </strong>
     </td>
     <td>82</td>
     <td>83</td>
@@ -119,7 +135,9 @@ My solutions for Project Euler (http://projecteuler.net) problems.
     <td>87</td>
     <td>88</td>
     <td>
-      <strong>89</strong>
+      <strong>
+        <del>89</del>
+      </strong>
     </td>
     <td>90</td>
   </tr>
@@ -130,12 +148,16 @@ My solutions for Project Euler (http://projecteuler.net) problems.
     <td>94</td>
     <td>95</td>
     <td>
-      <strong>96</strong>
+      <strong>
+        <del>96</del>
+      </strong>
     </td>
     <td>97</td>
     <td>98</td>
     <td>
-      <strong>99</strong>
+      <strong>
+        <del>99</del>
+      </strong>
     </td>
     <td>100</td>
     <td>101</td>
@@ -301,7 +323,9 @@ My solutions for Project Euler (http://projecteuler.net) problems.
     <td>241</td>
     <td>242</td>
     <td>
-      <strong>243</strong>
+      <strong>
+        <del>243</del>
+      </strong>
     </td>
     <td>244</td>
     <td>245</td>
