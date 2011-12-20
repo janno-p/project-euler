@@ -46,24 +46,22 @@ desc "Updates main README file"
 task :update do
   require 'builder'
   
-  row_length = 25
+  row_length = 15
   problem_count = 363
   problem_numbers = get_problems_list
   num_rows = problem_count / row_length + 1
   
   builder = Builder::XmlMarkup.new(:indent => 2)
-  table_html = builder.table({ :style => 'border: 1px solid gray;'}) do
+  table_html = builder.table do
     num_rows.times do |row|
       builder.tr do
         row_length.times do |column|
-          number = row * 25 + column + 1
+          number = row * row_length + column + 1
           number = '' if number > problem_count
-          attributes = { :style => 'border: 1px solid gray; font-size: 11px; text-align: center;' }
           if problem_numbers.include?(number) then
-            attributes[:style] << ' background-color: #cee7b6;'
-            builder.td(attributes) { builder.strong(number.to_s) }
+            builder.td { builder.strong(number.to_s) }
           else
-            builder.td(attributes, number)
+            builder.td(number)
           end
         end
       end
