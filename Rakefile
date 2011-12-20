@@ -51,7 +51,7 @@ task :update do
   problem_numbers = get_problems_list
   num_rows = problem_count / row_length + 1
   
-  builder = Builder::XmlMarkup.new(:indent => 2)
+  builder = Builder::XmlMarkup.new
   table_html = builder.table do
     num_rows.times do |row|
       builder.tr do
@@ -59,9 +59,9 @@ task :update do
           number = row * row_length + column + 1
           number = '' if number > problem_count
           if problem_numbers.include?(number) then
-            builder.td { builder.strong { builder.del(number.to_s) } }
-          else
             builder.td { builder.strong { builder.ins(number.to_s) } }
+          else
+            builder.td(number.to_s)
           end
         end
       end
