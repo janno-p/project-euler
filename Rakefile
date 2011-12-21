@@ -60,10 +60,12 @@ task :update do
         row_length.times do |column|
           number = row * row_length + column + 1
           number = '' if number > problem_count
-          if problem_numbers.key?(number) then
-            builder.td { builder.strong { problem_numbers[number] ? builder.del(number.to_s) : builder.ins(number.to_s) } }
-          else
-            builder.td(number.to_s)
+          builder.td do
+            if problem_numbers.key?(number) then
+              problem_numbers[number] ? builder.strong { builder.del(number.to_s) } : builder.ins(number.to_s)
+            else
+              builder.strong(number.to_s)
+            end
           end
         end
       end
