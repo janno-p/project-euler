@@ -62,7 +62,7 @@ task :update do
           number = '' if number > problem_count
           builder.td do
             if problem_numbers.key?(number) then
-              problem_numbers[number] ? builder.strong { builder.del(number.to_s) } : builder.ins(number.to_s)
+              builder.strong { problem_numbers[number] ? builder.del(number.to_s) : builder.ins(number.to_s) }
             else
               builder.strong(number.to_s)
             end
