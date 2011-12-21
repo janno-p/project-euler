@@ -1,16 +1,18 @@
 task :default => [:list]
 
 def get_problems_list
-  problem_numbers = []
+  problem_numbers = {}
   Dir.foreach('./problems/') do |name|
-    problem_numbers << $1.to_i if name =~ /^problem(\d+)$/
+    if name =~ /^problem(\d+)$/ then
+      problem_numbers[$1.to_i] = File.exists?(File.join('problems', name, 'solution.rb'))
+    end
   end
-  problem_numbers.sort
+  problem_numbers
 end
 
 desc "List all problems we have solution for"
 task :list do  
-  puts "Solutions for problems: #{get_problems_list.join(', ')}"
+  puts "Solutions for problems: #{get_problems_list.keys.sort.join(', ')}"
 end
 
 desc "Solve problem with given id"
@@ -58,7 +60,11 @@ task :update do
         row_length.times do |column|
           number = row * row_length + column + 1
           number = '' if number > problem_count
-          builder.td { problem_numbers.include?(number) ? builder.strong { builder.del(number.to_s) } : builder.strong(number.to_s) }
+          if problem_numbers.key?(number) then
+            builder.td { builder.strong { problem_numbers[number] ? builder.del(number.to_s) : builder.ins(number.to_s) } }
+          else
+            builder.td(number.to_s)
+          end
         end
       end
     end
