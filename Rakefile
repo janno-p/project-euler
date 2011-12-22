@@ -1,18 +1,22 @@
 task :default => [:list]
 
-def get_problems_list
-  problem_numbers = {}
-  Dir.foreach('./problems/') do |name|
-    if name =~ /^problem(\d+)$/ then
-      problem_numbers[$1.to_i] = File.exists?(File.join('problems', name, 'solution.rb'))
-    end
-  end
-  problem_numbers
+def collect_problems
+  Dir.foreach('problems').map do |name|
+    [$1.to_i, File.exists?(File.join('problems', name, 'solution.rb'))] if name =~ /^problem(\d+)$/
+  end.compact
+end
+
+def get_completed
+  collect_problems.map { |item| item.first if item.last }.compact.sort
+end
+
+def get_uncompleted
+  collect_problems.map { |item| item.first unless item.last }.compact.sort
 end
 
 desc "List all problems we have solution for"
 task :list do  
-  puts "Solutions for problems: #{get_problems_list.keys.sort.join(', ')}"
+  puts "Solutions for problems: #{get_completed.join(', ')}"
 end
 
 desc "Solve problem with given id"
@@ -46,17 +50,13 @@ end
 
 desc "Updates main README file"
 task :update do
-  problem_numbers = get_problems_list
-  
-  content = <<-eos
+  File.write('README.md', <<-eos)
 # Project Euler #
 
 My solutions for Project Euler (http://projecteuler.net) problems.
 
-Have solutions for: #{problem_numbers.select { |k, v| v }.map { |k, v| k.to_i }.sort.join(', ') }
+Have solutions for: #{get_completed.join(', ') }
 
-Solutions not completed: #{problem_numbers.select { |k, v| !v }.map { |k, v| k.to_i }.sort.join(', ') } 
+Solutions not completed: #{get_uncompleted.join(', ') } 
 eos
-  
-  File.write('README.md', content)
 end
