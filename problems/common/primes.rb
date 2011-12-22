@@ -7,15 +7,16 @@ module Primes
   # If upper bound is not specified, then block should be exited via. break
   # statement.
   def self.primes(max = nil, &block)
-    known_primes = []
-    n = 2
+    known_primes = [2]
+    n = 3
+    block.call(2) if block and (not max or 2 < max)
     loop do
       break if max and n > max
       if prime?(n, known_primes)
         known_primes << n        
         block.call(n) if block
       end
-      n += 1
+      n += 2
     end
     known_primes
   end
