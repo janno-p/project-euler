@@ -46,38 +46,16 @@ end
 
 desc "Updates main README file"
 task :update do
-  require 'builder'
-  
-  row_length = 15
-  problem_count = 363
   problem_numbers = get_problems_list
-  num_rows = problem_count / row_length + 1
-  
-  builder = Builder::XmlMarkup.new
-  table_html = builder.table do
-    num_rows.times do |row|
-      builder.tr do
-        row_length.times do |column|
-          number = row * row_length + column + 1
-          number = '' if number > problem_count
-          builder.td do
-            if problem_numbers.key?(number) then
-              builder.strong { problem_numbers[number] ? builder.del(number.to_s) : builder.ins(number.to_s) }
-            else
-              builder.strong(number.to_s)
-            end
-          end
-        end
-      end
-    end
-  end
   
   content = <<-eos
 # Project Euler #
 
 My solutions for Project Euler (http://projecteuler.net) problems.
 
-#{table_html}
+Have solutions for: #{problem_numbers.select { |k, v| v }.map { |k, v| k.to_i }.sort.join(', ') }
+
+Solutions not completed: #{problem_numbers.select { |k, v| !v }.map { |k, v| k.to_i }.sort.join(', ') } 
 eos
   
   File.write('README.md', content)
