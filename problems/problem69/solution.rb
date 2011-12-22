@@ -2,8 +2,6 @@
 
 require File.join(File.dirname(__FILE__), '..', 'common', 'primes.rb')
 
-include Primes
-
 # p[i] is prime factor of the number
 # φ(n) = n * (1 - 1 / p[1]) * (1 - 1 / p[2]) * ... * (1 - 1 / p[n])
 # n / φ(n) = (p[1] / (p[1] - 1)) * (p[2] / (p[2] - 1)) * ... * (p[n] / (p[n] - 1))
@@ -12,7 +10,7 @@ include Primes
 # Trying with smallest consecutive prime factors possible
 
 num = 1
-primes do |prime|
+Primes::primes do |prime|
   temp = num * prime
   break if temp > 1_000_000
   num = temp

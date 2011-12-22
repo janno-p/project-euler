@@ -6,12 +6,12 @@ module Primes
   # stops when that limit is reached.
   # If upper bound is not specified, then block should be exited via. break
   # statement.
-  def primes(max = nil, &block)
+  def self.primes(max = nil, &block)
     known_primes = []
     n = 2
     loop do
       break if max and n > max
-      if is_prime?(n, known_primes)
+      if prime?(n, known_primes)
         known_primes << n        
         block.call(n) if block
       end
@@ -22,7 +22,7 @@ module Primes
   
   # Checks if given number is prime according to known prime numbers that are
   # smaller than this particular number.
-  def is_prime?(n, known_primes)
+  def self.prime?(n, known_primes)
     max = Math.sqrt(n).to_i
     known_primes.each do |p|
       break if p > max
