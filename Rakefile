@@ -77,7 +77,8 @@ end
 desc "Updates main README file"
 task :update do
   puts "Writing main README file...".blue
-  File.write('README.md', <<-eos)
+  File.open('README.md', 'w') do |file|
+    file.write(<<-eos)
 # Project Euler #
 
 My solutions for Project Euler (http://projecteuler.net) problems.
@@ -86,4 +87,5 @@ Have solutions for: #{get_completed.join(', ') }
 
 Solutions not completed: #{get_uncompleted.join(', ') } 
 eos
+  end
 end
