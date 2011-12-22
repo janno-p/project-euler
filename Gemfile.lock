@@ -1,5 +1,6 @@
 GEM
   specs:
+    colorize (0.5.8)
     rake (0.9.2.2)
     redcarpet (2.0.1)
 
@@ -7,5 +8,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  colorize
   rake
   redcarpet

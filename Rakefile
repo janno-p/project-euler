@@ -1,3 +1,6 @@
+require 'colorize'
+require 'open3'
+
 task :default => [:list]
 
 def collect_problems
@@ -14,32 +17,44 @@ def get_uncompleted
   collect_problems.map { |item| item.first unless item.last }.compact.sort
 end
 
+def run_file(file_name, color)
+  Open3.popen3("ruby #{file_name}") do |stdin, stdout, stderr|
+    begin
+      while line = stdout.readline
+        line = line.send(color) if color
+        puts line
+      end
+    rescue
+    end
+  end
+end
+
 desc "List all problems we have solution for"
 task :list do  
-  puts "Problems with solution: #{get_completed.join(', ')}"
-  puts "Problems uncompleted: #{get_uncompleted.join(', ')}"
+  puts "Problems with solution: #{get_completed.join(', ')}".green
+  puts "Problems uncompleted: #{get_uncompleted.join(', ')}".yellow
 end
 
 desc "Run problem with given id"
 task :run, :problem_id do |task, args|
   problem_id = args[:problem_id]
-  raise "Problem id must be given" unless problem_id
+  raise "Problem id must be given".red unless problem_id
   
   file_name = File.join('.', 'problems', "problem#{problem_id}", 'solution.rb')
   if File.exists?(file_name) then
-    puts "Running solution for problem #{problem_id}..."
-    ruby file_name
+    puts "Running solution for problem #{problem_id}...".blue
+    run_file(file_name, :green)
     exit
   end
   
   file_name = File.join('.', 'problems', "problem#{problem_id}", 'problem.rb')
   if File.exists?(file_name) then
-    puts "Testing solution for problem #{problem_id}..."
-    ruby file_name
+    puts "Testing solution for problem #{problem_id}...".blue
+    run_file(file_name, :yellow)
     exit
   end
   
-  raise "Problem has no solution yet"
+  raise "Problem has no solution yet".red
 end
 
 desc "Create HTML description for problem"
@@ -47,12 +62,12 @@ task :md2html, :problem_id do |task, args|
   require 'redcarpet'
   
   problem_id = args[:problem_id]
-  raise "Problem id must be given" unless problem_id
+  raise "Problem id must be given".red unless problem_id
   
   problem_file_name = File.join('.', 'problems', "problem#{problem_id}", 'README.md')
-  raise "Problem documentation file does not exist" unless File.exists?(problem_file_name)
+  raise "Problem documentation file does not exist".red unless File.exists?(problem_file_name)
   
-  puts "Writing README file for problem #{problem_id}..."
+  puts "Writing README file for problem #{problem_id}...".blue
   
   markdown = File.read(problem_file_name)
   processor = Redcarpet::Markdown.new(Redcarpet::Render::HTML, :autolink => true, :space_after_headers => true)
@@ -61,6 +76,7 @@ end
 
 desc "Updates main README file"
 task :update do
+  puts "Writing main README file...".blue
   File.write('README.md', <<-eos)
 # Project Euler #
 
