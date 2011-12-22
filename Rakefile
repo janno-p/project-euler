@@ -16,19 +16,30 @@ end
 
 desc "List all problems we have solution for"
 task :list do  
-  puts "Solutions for problems: #{get_completed.join(', ')}"
+  puts "Problems with solution: #{get_completed.join(', ')}"
+  puts "Problems uncompleted: #{get_uncompleted.join(', ')}"
 end
 
-desc "Solve problem with given id"
-task :solve, :problem_id do |task, args|
+desc "Run problem with given id"
+task :run, :problem_id do |task, args|
   problem_id = args[:problem_id]
   raise "Problem id must be given" unless problem_id
   
-  problem_file_name = File.join('.', 'problems', "problem#{problem_id}", 'solution.rb')
-  raise "Problem has no solution yet" unless File.exists?(problem_file_name)
+  file_name = File.join('.', 'problems', "problem#{problem_id}", 'solution.rb')
+  if File.exists?(file_name) then
+    puts "Running solution for problem #{problem_id}..."
+    ruby file_name
+    exit
+  end
   
-  puts "Running solution for problem #{problem_id}..."
-  require problem_file_name
+  file_name = File.join('.', 'problems', "problem#{problem_id}", 'problem.rb')
+  if File.exists?(file_name) then
+    puts "Testing solution for problem #{problem_id}..."
+    ruby file_name
+    exit
+  end
+  
+  raise "Problem has no solution yet"
 end
 
 desc "Create HTML description for problem"
