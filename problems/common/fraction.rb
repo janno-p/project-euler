@@ -16,6 +16,10 @@ class Fraction
     @numerator * fraction.denominator < fraction.numerator * @denominator
   end
   
+  def >(fraction)
+    @numerator * fraction.denominator > fraction.numerator * @denominator
+  end
+  
   def +(fraction)
     Fraction.new(@numerator * fraction.denominator + fraction.numerator * @denominator, @denominator * fraction.denominator)
   end
