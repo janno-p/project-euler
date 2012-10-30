@@ -29,9 +29,14 @@ def run_file(file_name, color)
         print line
       end
     rescue
-    ensure
-      puts
     end
+    begin
+      while line = stderr.readline do
+        print line.red
+      end
+    rescue
+    end
+    puts
   end
 end
 
