@@ -26,9 +26,11 @@ def run_file(file_name, color)
     begin
       while line = stdout.readline
         line = line.send(color) if color
-        puts line
+        print line
       end
     rescue
+    ensure
+      puts
     end
   end
 end
