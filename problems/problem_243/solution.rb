@@ -26,7 +26,7 @@ target_resilience = Fraction.new(15499, 94744)
 last_number = 0
 last_resilience = Fraction::Zero
 
-while true do
+loop do
   factors << prime_generator.next
   number = factors.inject(:*)
   ratio = prime_ratio(factors)

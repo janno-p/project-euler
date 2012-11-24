@@ -19,11 +19,13 @@ def polygonal(name)
 end
 
 def collect_values(name)
-  values = []
+  values = {}
   polygonal(name) do |n, value|
     next if value < 1000 or (value / 10) % 10 == 0
     break if value > 9999
-    values << value
+    bucket_id = value / 100
+    values[bucket_id] = [] unless values.key? bucket_id
+    values[bucket_id] << value
   end
   values
 end
@@ -35,9 +37,27 @@ hexagonals = collect_values(:hexagonal)
 heptagonals = collect_values(:heptagonal)
 octagonals = collect_values(:octagonal)
 
-puts triangles.count
-puts squares.count
-puts pentagonals.count
-puts hexagonals.count
-puts heptagonals.count
-puts octagonals.count
+def find_set(origin, current, groups)
+  val = current % 100
+  if groups.size == 0 then
+    return val == origin ? [] : nil
+  end
+  groups.each do |g|
+    next unless g.key? val
+    g[val].each do |num|
+      r = find_set(origin, num, groups.select { |i| i != g })
+      return r.insert(0, num) unless r.nil?
+    end
+  end
+  nil
+end
+
+octagonals.each do |k, v|
+  v.each do |num|
+    r = find_set(k, num, [triangles, squares, pentagonals, hexagonals, heptagonals])
+    unless r.nil? then
+      puts r.insert(0, num).inject(:+)
+      exit
+    end
+  end
+end
