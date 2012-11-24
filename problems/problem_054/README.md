@@ -3,16 +3,16 @@
 In the card game poker, a hand consists of five cards and are ranked, from
 lowest to highest, in the following way:
 
-  + **High Card**: Highest value card.
-  + **One Pair**: Two cards of the same value.
-  + **Two Pairs**: Two different pairs.
-  + **Three of a Kind**: Three cards of the same value.
-  + **Straight**: All cards are consecutive values.
-  + **Flush**: All cards of the same suit.
-  + **Full House**: Three of a kind and a pair.
-  + **Four of a Kind**: Four cards of the same value.
-  + **Straight Flush**: All cards are consecutive values of same suit.
-  + **Royal Flush**: Ten, Jack, Queen, King, Ace, in same suit.
+  - **High Card**: Highest value card.
+  - **One Pair**: Two cards of the same value.
+  - **Two Pairs**: Two different pairs.
+  - **Three of a Kind**: Three cards of the same value.
+  - **Straight**: All cards are consecutive values.
+  - **Flush**: All cards of the same suit.
+  - **Full House**: Three of a kind and a pair.
+  - **Four of a Kind**: Four cards of the same value.
+  - **Straight Flush**: All cards are consecutive values of same suit.
+  - **Royal Flush**: Ten, Jack, Queen, King, Ace, in same suit.
 
 The cards are valued in the order:
 
@@ -29,86 +29,68 @@ Consider the following five hands dealt to two players:
 <table>
   <tr>
     <th>Hand</th>
-    <th>&nbsp;</th>
     <th>Player 1</th>
-    <th>&nbsp;</th>
     <th>Player 2</th>
-    <th>&nbsp;</th>
     <th>Winner</th>
   </tr>
   <tr>
     <th style="vertical-align:top;">1</th>
-    <td>&nbsp;</td>
     <td>
       5H 5C 6S 7S KD<br />
       <div class="info">Pair of Fives</div>
     </td>
-    <td>&nbsp;</td>
     <td>
       2C 3S 8S 8D TD<br />
       <div class="info">Pair of Eights</div>
     </td>
-    <td>&nbsp;</td>
     <td style="vertical-align:top;">Player 2</td>
   </tr>
   <tr>
     <th style="vertical-align:top;">2</th>
-    <td>&nbsp;</td>
     <td>
       5D 8C 9S JS AC<br />
       <div class="info">Highest card Ace</div>
     </td>
-    <td>&nbsp;</td>
     <td>
       2C 5C 7D 8S QH<br />
       <div class="info">Highest card Queen</div>
     </td>
-    <td>&nbsp;</td>
     <td style="vertical-align:top;">Player 1</td>
   </tr>
   <tr>
     <th style="vertical-align:top;">3</th>
-    <td>&nbsp;</td>
     <td>
       2D 9C AS AH AC<br />
       <div class="info">Three Aces</div>
     </td>
-    <td>&nbsp;</td>
     <td>
       3D 6D 7D TD QD<br />
       <div class="info">Flush  with Diamonds</div>
     </td>
-    <td>&nbsp;</td>
     <td style="vertical-align:top;">Player 2</td>
   </tr>
   <tr>
     <th style="vertical-align:top;">4</th>
-    <td>&nbsp;</td>
     <td>
       4D 6S 9H QH QC<br />
       <div class="info">Pair of Queens<br />Highest card Nine</div>
     </td>
-    <td>&nbsp;</td>
     <td>
       3D 6D 7H QD QS<br />
       <div class="info">Pair of Queens<br />Highest card Seven</div>
     </td>
-    <td>&nbsp;</td>
     <td style="vertical-align:top;">Player 1</td>
   </tr>
   <tr>
     <th style="vertical-align:top;">5</th>
-    <td>&nbsp;</td>
     <td>
       2H 2D 4C 4D 4S<br />
       <div class="info">Full House<br />With Three Fours</div>
     </td>
-    <td>&nbsp;</td>
     <td>
       3C 3D 3S 9S 9D<br />
       <div class="info">Full House<br />with Three Threes</div>
     </td>
-    <td>&nbsp;</td>
     <td style="vertical-align:top;">Player 1</td>
   </tr>
 </table>
