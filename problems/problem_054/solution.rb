@@ -60,25 +60,28 @@ end
 
 def get_score(hand)
   faces = hand.map { |card| card[:face] }.sort
+
   if flush?(hand)
     return flush_score(faces) unless straight?(faces)
     return royal_flush_score if faces.min == 10
-    straight_flush_score(faces)
-  else
-    groups = faces.group_by { |f| f }.map { |g| [g.first, g.last.size] }
-    if groups.size == 2
-      return four_of_a_kind_score(groups) if groups.any? { |g| g.last == 4 }
-      return full_house_score(groups)
-    end
-    return straight_score(faces) if straight?(faces)
-    return three_of_a_kind_score(groups) if groups.any? { |g| g.last == 3 }
-    return two_pairs_score(groups) if groups.select { |g| g.last == 2 }.size == 2
-    return one_pair_score(groups) if groups.any? { |g| g.last == 2 }
-
-    score = 0
-    faces.each_with_index { |v,i| score += 14**i * v }
-    score
+    return straight_flush_score(faces)
   end
+
+  groups = faces.group_by { |f| f }.map { |g| [g.first, g.last.size] }
+
+  if groups.size == 2
+    return four_of_a_kind_score(groups) if groups.any? { |g| g.last == 4 }
+    return full_house_score(groups)
+  end
+
+  return straight_score(faces) if straight?(faces)
+  return three_of_a_kind_score(groups) if groups.any? { |g| g.last == 3 }
+  return two_pairs_score(groups) if groups.select { |g| g.last == 2 }.size == 2
+  return one_pair_score(groups) if groups.any? { |g| g.last == 2 }
+
+  score = 0
+  faces.each_with_index { |v,i| score += 14**i * v }
+  score
 end
 
 def map_hand(cards)
