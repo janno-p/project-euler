@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
 
-require File.join(File.dirname(__FILE__), '..', 'common', 'primes.rb')
+require 'mathn'
 
-MaxValue = 20
+MAX_VALUE = 20
 
-factors = Hash[*Primes::primes(MaxValue).map { |i| [i, 1] }.flatten]
+factors = Hash[*Prime.each(MAX_VALUE).map { |prime| [prime, 1] }.flatten]
 primes = factors.keys.sort
 
-2.upto(MaxValue) do |n|
+2.upto(MAX_VALUE) do |n|
   primes.each do |p|
     break if n == 1
     count = 0
