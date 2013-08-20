@@ -1,8 +1,8 @@
 GEM
   specs:
     colorize (0.5.8)
-    rake (10.0.3)
-    redcarpet (2.2.2)
+    rake (10.1.0)
+    redcarpet (2.3.0)
 
 PLATFORMS
   ruby
