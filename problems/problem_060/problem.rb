@@ -1,6 +1,15 @@
 #!/usr/bin/env ruby
 
 require 'mathn'
+require 'set'
+
+def concat(a, b)
+  dec = 10
+  until b % dec == b do
+    dec *= 10
+  end
+  return a * dec + b
+end
 
 def enumerate_prime_combinations(num)
   return if num < 10
@@ -9,29 +18,42 @@ def enumerate_prime_combinations(num)
     a = (num / dec).to_i
     b = num % dec
     if Prime.prime?(a) and Prime.prime?(b) then
-      rev_dec = 10
-      until a % rev_dec == a do
-        rev_dec *= 10
-      end
-      yield a, b if Prime.prime?(b * rev_dec + a)
+      yield a, b if Prime.prime?(concat(b, a))
     end
     dec *= 10
   end
 end
 
-group = {}
+group2 = {}
+group3 = {}
+group4 = {}
 
 Prime.each do |prime|
   break if prime > 100000
   enumerate_prime_combinations(prime) do |a, b|
-    group[a] = Set.new unless group.key?(a)
-    group[a] << b
-    group[b] = Set.new unless group.key?(b)
-    group[b] << a
-    if group[a].size >= 3 or group[b].size >= 3 then
-      puts "#{a},#{group[a].to_a.join(',')}" if group[a].size >= 3
-      puts "#{b},#{group[b].to_a.join(',')}" if group[b].size >= 3
-      exit
+    group2[a] ||= Set.new
+    group2[a] << b
+    group2[b] ||= Set.new
+    group2[b] << a
+    (group2[a] & group2[b]).each do |n|
+      group3[a] ||= Set.new
+      group3[a] += [b, n]
+      group3[b] ||= Set.new
+      group3[b] += [a, n]
+      group3[n] ||= Set.new
+      group3[n] += [a, b]
+      (group3[a] & group3[b] & group3[n]).each do |m|
+        group4[a] ||= Set.new
+        group4[a] += [b, n, m]
+        group4[b] ||= Set.new
+        group4[b] += [a, n, m]
+        group4[n] ||= Set.new
+        group4[n] += [a, b, m]
+        group4[m] ||= Set.new
+        group4[m] += [a, b, n]
+      end
     end
   end
 end
+
+puts group4
