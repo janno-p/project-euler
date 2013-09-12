@@ -8,6 +8,7 @@ def concat(a, b)
   until b % dec == b do
     dec *= 10
   end
+  puts "! #{a * dec + b}" if a == 7 and b == 13
   return a * dec + b
 end
 
@@ -31,29 +32,36 @@ group4 = {}
 Prime.each do |prime|
   break if prime > 100000
   enumerate_prime_combinations(prime) do |a, b|
+    puts "! #{prime}" if a == 7 and b == 13
     group2[a] ||= Set.new
     group2[a] << b
     group2[b] ||= Set.new
     group2[b] << a
     (group2[a] & group2[b]).each do |n|
-      group3[a] ||= Set.new
-      group3[a] += [b, n]
-      group3[b] ||= Set.new
-      group3[b] += [a, n]
-      group3[n] ||= Set.new
-      group3[n] += [a, b]
-      (group3[a] & group3[b] & group3[n]).each do |m|
+      ab, an, bn = [a, b].sort, [a, n].sort, [b, n].sort
+      group3[ab] ||= Set.new
+      group3[ab] << n
+      group3[an] ||= Set.new
+      group3[an] << b
+      group3[bn] ||= Set.new
+      group3[bn] << a
+      (group3[ab] & group3[an] & group3[bn]).each do |m|
+        puts "a: #{a}; b: #{b}; n: #{n}; m: #{m}"
+        puts ab
+        puts an
+        puts bn
+        exit
         group4[a] ||= Set.new
-        group4[a] += [b, n, m]
+        group4[a] << [b, n, m]
         group4[b] ||= Set.new
-        group4[b] += [a, n, m]
+        group4[b] << [a, n, m]
         group4[n] ||= Set.new
-        group4[n] += [a, b, m]
+        group4[n] << [a, b, m]
         group4[m] ||= Set.new
-        group4[m] += [a, b, n]
+        group4[m] << [a, b, n]
       end
     end
   end
 end
 
-puts group4
+puts group3
